@@ -18,6 +18,7 @@ namespace RedBrain.Authentication.Migrations.SqlServerMigrations
                     LastName = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     Mobile = table.Column<string>(nullable: true),
+                    Tenant = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true)
                 },

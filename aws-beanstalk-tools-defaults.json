@@ -1,0 +1,20 @@
+
+{
+    "region" : "ap-south-1",
+    "configuration" : "Release",
+    "framework"     : "netcoreapp3.1",
+    "self-contained" : false,
+    "application"    : "RedBrainAuthentication",
+    "environment"    : "Redbrainauthentication-INT",
+    "enable-xray"    : true,
+    "enhanced-health-type" : "enhanced",
+    "additional-options"   : "",
+    "solution-stack"       : "64bit Amazon Linux 2 v2.0.1 running .NET Core",
+    "environment-type"     : "SingleInstance",
+    "cname"                : "redbrainauthentication-dev",
+    "instance-type"        : "t2.micro",
+    "key-pair"             : "",
+    "instance-profile"     : "aws-elasticbeanstalk-ec2-role",
+    "service-role"         : "AWSServiceRoleForElasticBeanstalk",
+    "proxy-server"         : "nginx"
+}
