@@ -39,6 +39,9 @@ namespace RedBrain.Authentication.Migrations.SqlServerMigrations
 
                     b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
+                    
+                    b.Property<string>("Tenant")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
