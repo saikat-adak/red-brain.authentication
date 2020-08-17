@@ -26,10 +26,13 @@ namespace RedBrain.Authentication
             _configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // use sql server db in production and sqlite db in development
+            // use sql server in production and sqlite db in development
             if (_env.IsProduction())
                 services.AddDbContext<DataContext>();
             else
@@ -83,7 +86,12 @@ namespace RedBrain.Authentication
             services.AddScoped<IUserService, UserService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <param name="dataContext"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext dataContext)
         {
             // migrate any database changes on startup (includes initial db creation)

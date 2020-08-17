@@ -48,8 +48,8 @@ namespace RedBrain.Authentication.Controllers
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Issuer = "http://localhost:4000",
-                Audience = "http://localhost:4000",
+                Issuer = "http://localhost:5000",
+                Audience = "http://localhost:5000",
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
