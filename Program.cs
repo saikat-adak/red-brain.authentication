@@ -27,7 +27,7 @@ namespace RedBrain.Authentication
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseIISIntegration()
                     .UseStartup<Startup>();
-                    //.UseUrls("http://localhost:4000");
+                    //.UseUrls("http://localhost:5000");
                 });
     }
 }
