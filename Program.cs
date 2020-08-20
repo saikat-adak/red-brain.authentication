@@ -18,7 +18,7 @@ namespace RedBrain.Authentication
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    var config = new ConfigurationBuilder()
+                    IConfigurationRoot config = new ConfigurationBuilder()
                         .AddCommandLine(args)
                         .Build();
                     webBuilder
