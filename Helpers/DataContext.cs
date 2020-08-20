@@ -15,7 +15,6 @@ namespace RedBrain.Authentication.Helpers
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            // connect to sql server database
             options.UseSqlServer(Configuration.GetConnectionString("Database"));
         }
 

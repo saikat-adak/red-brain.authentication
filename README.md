@@ -103,3 +103,7 @@ Run the following command:
 **Response**
 
 Status: 200 OK
+
+
+## Postman test runner
+All these features can be tested by running a collection in Postman (PFA 'postman-collection.json' in the root directory).

@@ -1,332 +1,407 @@
 {
 	"info": {
 		"_postman_id": "d720ecf1-f362-45bf-b421-439e384acb96",
-		"name": "RedBrain",
+		"name": "redbrain.authentication",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Authentication microservice",
-			"item": [
-				{
-					"name": "register",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "f04aa139-8101-4aae-beab-14e4fb19ddea",
-								"exec": [
-									"pm.test(\"Status code should be 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"//setting variables for next calls\r",
-									"//const responseJson = pm.response.json();\r",
-									"const requestJson = JSON.parse(request.data);\r",
-									"\r",
-									"pm.environment.set(\"redbrain-uid\", requestJson.username);\r",
-									"pm.environment.set(\"redbrain-pwd\", requestJson.password);\r",
-									"pm.environment.set(\"redbrain-tenant\", requestJson.tenant);\r",
-									"\r",
-									"pm.environment.set(\"redbrain-user\", requestJson);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Saikat\",\r\n    \"lastName\": \"Adak\",\r\n    \"username\": \"saikat.adak\",\r\n    \"email\": \"abc@xyz.com\",\r\n    \"mobile\": \"9668776655\",\r\n    \"password\": \"test123\",\r\n    \"tenant\": \"my-first-app\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{redbrain-host}}/users/register",
-							"host": [
-								"{{redbrain-host}}"
-							],
-							"path": [
-								"users",
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "authenticate",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "88a201fe-3844-4da9-a9e0-87968be733e8",
-								"exec": [
-									"pm.test(\"Status code should be 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"var redbrainUser = pm.variables.get(\"redbrain-user\");\r",
-									"var responseJson = JSON.parse(responseBody);\r",
-									"\r",
-									"pm.test(\"token should be provided\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"token\");\r",
-									"});\r",
-									"pm.test(\"id should be provided\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"id\");\r",
-									"});\r",
-									"pm.test(\"username should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"username\", redbrainUser.username);\r",
-									"});\r",
-									"pm.test(\"firstName should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"firstName\", redbrainUser.firstName);\r",
-									"});\r",
-									"pm.test(\"lastName should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"lastName\", redbrainUser.lastName);\r",
-									"});\r",
-									"pm.test(\"email should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"email\", redbrainUser.email);\r",
-									"});\r",
-									"pm.test(\"mobile should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"mobile\", redbrainUser.mobile);\r",
-									"});\r",
-									"pm.test(\"tenant should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"tenant\", redbrainUser.tenant);\r",
-									"});\r",
-									"\r",
-									"\r",
-									"//setting for later usage\r",
-									"response = pm.response.json();\r",
-									"pm.environment.set('redbrain-access-token', response.token);\r",
-									"pm.environment.set('redbrain-user-id', response.id);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"{{redbrain-uid}}\",\r\n    \"password\": \"{{redbrain-pwd}}\",\r\n    \"tenant\": \"{{redbrain-tenant}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{redbrain-host}}/users/authenticate",
-							"host": [
-								"{{redbrain-host}}"
-							],
-							"path": [
-								"users",
-								"authenticate"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "ffc95fb4-8e56-4cc8-8fcd-a3a45f0847cd",
-								"exec": [
-									"pm.test(\"Status code should be 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"var redbrainUser = pm.variables.get(\"redbrain-user\");\r",
-									"var responseJson = JSON.parse(responseBody);\r",
-									"\r",
-									"pm.test(\"id should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"id\", pm.variables.get(\"redbrain-user-id\"));\r",
-									"});\r",
-									"pm.test(\"username should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"username\", redbrainUser.username);\r",
-									"});\r",
-									"pm.test(\"firstName should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"firstName\", redbrainUser.firstName);\r",
-									"});\r",
-									"pm.test(\"lastName should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"lastName\", redbrainUser.lastName);\r",
-									"});\r",
-									"pm.test(\"email should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"email\", redbrainUser.email);\r",
-									"});\r",
-									"pm.test(\"mobile should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"mobile\", redbrainUser.mobile);\r",
-									"});\r",
-									"pm.test(\"tenant should match\", function () {\r",
-									"    pm.expect(responseJson).to.have.property(\"tenant\", redbrainUser.tenant);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{redbrain-access-token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{redbrain-host}}/users/{{redbrain-user-id}}",
-							"host": [
-								"{{redbrain-host}}"
-							],
-							"path": [
-								"users",
-								"{{redbrain-user-id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "d4e6b035-2a51-4b2c-993d-ba17438a3253",
-								"exec": [
-									"pm.test(\"Status code should be 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{redbrain-access-token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{redbrain-host}}/users/{{redbrain-user-id}}",
-							"host": [
-								"{{redbrain-host}}"
-							],
-							"path": [
-								"users",
-								"{{redbrain-user-id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get all users",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{redbrain-access-token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{redbrain-host}}/users",
-							"host": [
-								"{{redbrain-host}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				}
-			],
+			"name": "register",
 			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "4c10722d-94fd-496a-8fa8-1ee080d2577f",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
 				{
 					"listen": "test",
 					"script": {
-						"id": "a6957f13-8bdd-4dca-b5c5-59448d18d23e",
-						"type": "text/javascript",
+						"id": "f04aa139-8101-4aae-beab-14e4fb19ddea",
 						"exec": [
-							""
-						]
+							"pm.test(\"Status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//setting variables for next calls\r",
+							"//const responseJson = pm.response.json();\r",
+							"const requestJson = JSON.parse(request.data);\r",
+							"\r",
+							"pm.environment.set(\"redbrain-uid\", requestJson.username);\r",
+							"pm.environment.set(\"redbrain-pwd\", requestJson.password);\r",
+							"pm.environment.set(\"redbrain-tenant\", requestJson.tenant);\r",
+							"\r",
+							"pm.environment.set(\"redbrain-user\", requestJson);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3b705aea-c71e-4529-8963-4345cf4164c2",
+						"exec": [
+							"pm.environment.set(\"redbrain-random-user\", \"usr\" + Math.floor(Math.random() * 99999));"
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
-			"protocolProfileBehavior": {}
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"User\",\r\n    \"username\": \"{{redbrain-random-user}}\",\r\n    \"email\": \"test@user.com\",\r\n    \"mobile\": \"9668776655\",\r\n    \"password\": \"test123\",\r\n    \"tenant\": \"my-first-app\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{redbrain-host}}/users/register",
+					"host": [
+						"{{redbrain-host}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "authenticate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "88a201fe-3844-4da9-a9e0-87968be733e8",
+						"exec": [
+							"pm.test(\"Status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var redbrainUser = pm.variables.get(\"redbrain-user\");\r",
+							"var responseJson = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"token should be provided\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"token\");\r",
+							"});\r",
+							"pm.test(\"id should be provided\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"id\");\r",
+							"});\r",
+							"pm.test(\"username should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"username\", redbrainUser.username);\r",
+							"});\r",
+							"pm.test(\"firstName should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"firstName\", redbrainUser.firstName);\r",
+							"});\r",
+							"pm.test(\"lastName should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"lastName\", redbrainUser.lastName);\r",
+							"});\r",
+							"pm.test(\"email should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"email\", redbrainUser.email);\r",
+							"});\r",
+							"pm.test(\"mobile should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"mobile\", redbrainUser.mobile);\r",
+							"});\r",
+							"pm.test(\"tenant should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"tenant\", redbrainUser.tenant);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//setting for later usage\r",
+							"response = pm.response.json();\r",
+							"pm.environment.set('redbrain-access-token', response.token);\r",
+							"pm.environment.set('redbrain-user-id', response.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{redbrain-uid}}\",\r\n    \"password\": \"{{redbrain-pwd}}\",\r\n    \"tenant\": \"{{redbrain-tenant}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{redbrain-host}}/users/authenticate",
+					"host": [
+						"{{redbrain-host}}"
+					],
+					"path": [
+						"users",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ffc95fb4-8e56-4cc8-8fcd-a3a45f0847cd",
+						"exec": [
+							"pm.test(\"Status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var redbrainUser = pm.variables.get(\"redbrain-user\");\r",
+							"var responseJson = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"id should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"id\", pm.variables.get(\"redbrain-user-id\"));\r",
+							"});\r",
+							"pm.test(\"username should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"username\", redbrainUser.username);\r",
+							"});\r",
+							"pm.test(\"firstName should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"firstName\", redbrainUser.firstName);\r",
+							"});\r",
+							"pm.test(\"lastName should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"lastName\", redbrainUser.lastName);\r",
+							"});\r",
+							"pm.test(\"email should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"email\", redbrainUser.email);\r",
+							"});\r",
+							"pm.test(\"mobile should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"mobile\", redbrainUser.mobile);\r",
+							"});\r",
+							"pm.test(\"tenant should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"tenant\", redbrainUser.tenant);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{redbrain-access-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{redbrain-host}}/users/{{redbrain-user-id}}",
+					"host": [
+						"{{redbrain-host}}"
+					],
+					"path": [
+						"users",
+						"{{redbrain-user-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d4e6b035-2a51-4b2c-993d-ba17438a3253",
+						"exec": [
+							"pm.test(\"Status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{redbrain-access-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{redbrain-host}}/users/{{redbrain-user-id}}",
+					"host": [
+						"{{redbrain-host}}"
+					],
+					"path": [
+						"users",
+						"{{redbrain-user-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get updated user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "be2ca4f1-75a5-405f-9e65-794dd0341db7",
+						"exec": [
+							"pm.test(\"Status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var redbrainUser = pm.variables.get(\"redbrain-user\");\r",
+							"var responseJson = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"id should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"id\", pm.variables.get(\"redbrain-user-id\"));\r",
+							"});\r",
+							"pm.test(\"username should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"username\", redbrainUser.username);\r",
+							"});\r",
+							"pm.test(\"firstName should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"firstName\", \"John\");\r",
+							"});\r",
+							"pm.test(\"lastName should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"lastName\", \"Doe\");\r",
+							"});\r",
+							"pm.test(\"email should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"email\", redbrainUser.email);\r",
+							"});\r",
+							"pm.test(\"mobile should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"mobile\", redbrainUser.mobile);\r",
+							"});\r",
+							"pm.test(\"tenant should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"tenant\", redbrainUser.tenant);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{redbrain-access-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{redbrain-host}}/users/{{redbrain-user-id}}",
+					"host": [
+						"{{redbrain-host}}"
+					],
+					"path": [
+						"users",
+						"{{redbrain-user-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4d5ec3c6-20ac-4ed0-a5b0-c37facfd8856",
+						"exec": [
+							"pm.test(\"Status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{redbrain-access-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{redbrain-host}}/users",
+					"host": [
+						"{{redbrain-host}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -336,8 +411,8 @@
 				"id": "1fb06c41-5646-4ca2-98e8-9bd8518c7a96",
 				"type": "text/javascript",
 				"exec": [
-					"//pm.environment.set(\"redbrain-host\", \"http://localhost:5000\"); //for dev",
-					"pm.environment.set(\"redbrain-host\", \"http://redbrainauthentication-int.eba-pmzc8fcc.ap-south-1.elasticbeanstalk.com\");"
+					"pm.environment.set(\"redbrain-host\", \"http://localhost:5000\"); //for dev",
+					"//pm.environment.set(\"redbrain-host\", \"http://redbrainauthentication-int.eba-pmzc8fcc.ap-south-1.elasticbeanstalk.com\");"
 				]
 			}
 		},

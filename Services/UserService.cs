@@ -20,6 +20,10 @@ namespace RedBrain.Authentication.Services
     {
         private DataContext _context;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="context"></param>
         public UserService(DataContext context)
         {
             _context = context;
@@ -38,7 +42,7 @@ namespace RedBrain.Authentication.Services
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(tenant))
                 return null;
 
-            var user = _context.Users.SingleOrDefault(x => x.Username == username && x.Tenant == tenant);
+            User user = _context.Users.SingleOrDefault(x => x.Username == username && x.Tenant == tenant);
 
             // check if username exists
             if (user == null)
@@ -52,6 +56,11 @@ namespace RedBrain.Authentication.Services
             return user;
         }
 
+        /// <summary>
+        /// Get all users for a given tenant.
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns></returns>
         public IEnumerable<User> GetAll(string tenant)
         {
             if (tenant == null)
@@ -60,11 +69,23 @@ namespace RedBrain.Authentication.Services
                 return _context.Users.Where(x => x.Tenant == tenant);
         }
 
+        /// <summary>
+        /// Get a user by user id. 
+        /// Authorization is implemented to check whether the id belongs to current user's tenant.
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <returns></returns>
         public User GetById(int id)
         {
             return _context.Users.Find(id);
         }
 
+        /// <summary>
+        /// Register a new user.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public User Create(User user, string password)
         {
             // validation
@@ -86,9 +107,14 @@ namespace RedBrain.Authentication.Services
             return user;
         }
 
+        /// <summary>
+        /// Update an existing user.
+        /// </summary>
+        /// <param name="userParam"></param>
+        /// <param name="password"></param>
         public void Update(User userParam, string password = null)
         {
-            var user = _context.Users.Find(userParam.Id);
+            User user = _context.Users.Find(userParam.Id);
 
             if (user == null)
                 throw new AppException("User not found");
@@ -130,9 +156,14 @@ namespace RedBrain.Authentication.Services
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Delete a user by id.
+        /// Authorization is implemented to check whether the id belongs to current user's tenant.
+        /// </summary>
+        /// <param name="id">user id</param>
         public void Delete(int id)
         {
-            var user = _context.Users.Find(id);
+            User user = _context.Users.Find(id);
             if (user != null)
             {
                 _context.Users.Remove(user);
@@ -147,7 +178,7 @@ namespace RedBrain.Authentication.Services
             if (password == null) throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
 
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            using (System.Security.Cryptography.HMACSHA512 hmac = new System.Security.Cryptography.HMACSHA512())
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
@@ -161,9 +192,9 @@ namespace RedBrain.Authentication.Services
             if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
             if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
 
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
+            using (System.Security.Cryptography.HMACSHA512 hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
             {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                byte[] computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 for (int i = 0; i < computedHash.Length; i++)
                 {
                     if (computedHash[i] != storedHash[i]) return false;

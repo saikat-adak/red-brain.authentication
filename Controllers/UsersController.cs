@@ -21,8 +21,8 @@ namespace RedBrain.Authentication.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private IUserService _userService;
-        private IMapper _mapper;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
 
         public UsersController(
@@ -39,14 +39,14 @@ namespace RedBrain.Authentication.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] AuthenticateModel model)
         {
-            var user = _userService.Authenticate(model.Username, model.Password, model.Tenant);
+            User user = _userService.Authenticate(model.Username, model.Password, model.Tenant);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            byte[] key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = "http://localhost:5000",
                 Audience = "http://localhost:5000",
@@ -57,18 +57,18 @@ namespace RedBrain.Authentication.Controllers
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
-            var token = tokenHandler.CreateToken(tokenDescriptor); //TODO: why token signature is not valid
-            var tokenString = tokenHandler.WriteToken(token);
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor); //TODO: why token signature is not valid
+            string tokenString = tokenHandler.WriteToken(token);
 
             return Ok(new
             {
-                Id = user.Id,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Mobile = user.Mobile,
-                Tenant = user.Tenant,
+                user.Id,
+                user.Username,
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.Mobile,
+                user.Tenant,
                 TokenType = "Bearer",
                 Token = tokenString
             });
@@ -79,11 +79,10 @@ namespace RedBrain.Authentication.Controllers
         public IActionResult Register([FromBody] RegisterModel model)
         {
             // map model to entity
-            var user = _mapper.Map<User>(model);
+            User user = _mapper.Map<User>(model);
 
             try
             {
-                // create user
                 _userService.Create(user, model.Password);
                 return Ok(); //TODO: convert it to 201
             }
@@ -97,8 +96,8 @@ namespace RedBrain.Authentication.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var users = _userService.GetAll(GetLoggedInUser().Tenant);
-            var model = _mapper.Map<IList<UserModel>>(users);
+            IEnumerable<User> users = _userService.GetAll(GetLoggedInUser().Tenant);
+            IList<UserModel> model = _mapper.Map<IList<UserModel>>(users);
             return Ok(model);
         }
 
@@ -108,8 +107,8 @@ namespace RedBrain.Authentication.Controllers
             //check if the provided user id belongs to currently loggedin user's tenant
             if (!IsTenantMatching(id)) return Unauthorized("Not authorized to access this user");
 
-            var user = _userService.GetById(id);
-            var model = _mapper.Map<UserModel>(user);
+            User user = _userService.GetById(id);
+            UserModel model = _mapper.Map<UserModel>(user);
             return Ok(model);
         }
 
@@ -120,12 +119,11 @@ namespace RedBrain.Authentication.Controllers
             if (!IsTenantMatching(id)) return Unauthorized("Not authorized to modify this user");
 
             // map model to entity and set id
-            var user = _mapper.Map<User>(model);
+            User user = _mapper.Map<User>(model);
             user.Id = id;
 
             try
             {
-                // update user 
                 _userService.Update(user, model.Password);
                 return Ok();
             }
@@ -148,7 +146,7 @@ namespace RedBrain.Authentication.Controllers
 
         private User GetLoggedInUser()
         {
-            var userId = int.Parse(this.User.Identities.FirstOrDefault().Name);
+            int userId = int.Parse(this.User.Identities.FirstOrDefault().Name);
             return _userService.GetById(userId);
         }
 
