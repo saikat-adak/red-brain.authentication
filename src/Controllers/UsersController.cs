@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-using System.IdentityModel.Tokens.Jwt;
-using RedBrain.Authentication.Helpers;
-using Microsoft.Extensions.Options;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using RedBrain.Authentication.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using RedBrain.Authentication.Entities;
+using RedBrain.Authentication.Helpers;
 using RedBrain.Authentication.Models.Users;
+using RedBrain.Authentication.Services;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 
 namespace RedBrain.Authentication.Controllers
 {
