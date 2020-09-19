@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{4FB5E51B-6309-4417-9BA2-0D61C96C9C94}") = "RedBrain.Authentication", "RedBrain.Authentication.csproj", "{4CFC834D-F8FB-44FA-96C5-4AF0F76BD6CA}"
+Project("{4FB5E51B-6309-4417-9BA2-0D61C96C9C94}") = "RedBrain.Authentication", "src\RedBrain.Authentication.csproj", "{4CFC834D-F8FB-44FA-96C5-4AF0F76BD6CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedBrain.Authentication.Tests", "tests\RedBrain.Authentication.Tests.csproj", "{0386F051-264C-49F5-909E-804499FB03C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4CFC834D-F8FB-44FA-96C5-4AF0F76BD6CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CFC834D-F8FB-44FA-96C5-4AF0F76BD6CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CFC834D-F8FB-44FA-96C5-4AF0F76BD6CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0386F051-264C-49F5-909E-804499FB03C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0386F051-264C-49F5-909E-804499FB03C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0386F051-264C-49F5-909E-804499FB03C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0386F051-264C-49F5-909E-804499FB03C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
