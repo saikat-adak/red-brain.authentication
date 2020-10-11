@@ -19,3 +19,4 @@ obj
 LocalDatabase.db*
 
 .vs
+.vscode

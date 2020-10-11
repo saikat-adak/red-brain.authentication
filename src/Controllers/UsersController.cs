@@ -60,15 +60,15 @@ namespace RedBrain.Authentication.Controllers
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor); //TODO: why token signature is not valid
             string tokenString = tokenHandler.WriteToken(token);
 
-            return Ok(new
+            return Ok(new AuthenticationResultModel
             {
-                user.Id,
-                user.Username,
-                user.FirstName,
-                user.LastName,
-                user.Email,
-                user.Mobile,
-                user.Tenant,
+                Id = user.Id,
+                Username = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Mobile = user.Mobile,
+                Tenant = user.Tenant,
                 TokenType = "Bearer",
                 Token = tokenString
             });
