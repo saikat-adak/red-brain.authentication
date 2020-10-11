@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
+using Prometheus;
 
 namespace RedBrain.Authentication
 {
@@ -109,6 +110,10 @@ namespace RedBrain.Authentication
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
+
+            // Use the Prometheus middleware
+            app.UseMetricServer();
+            app.UseHttpMetrics();
         }
     }
 }
