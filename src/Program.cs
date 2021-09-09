@@ -1,7 +1,9 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Hosting;
+using System.IO;
+using System.Linq;
 
 namespace RedBrain.Authentication
 {
@@ -20,14 +22,19 @@ namespace RedBrain.Authentication
                 {
                     IConfigurationRoot config = new ConfigurationBuilder()
                         .AddCommandLine(args)
+                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                         .Build();
+
+                    //fetching localhost url from config
+                    config.Providers.FirstOrDefault(x => x.GetType() == typeof(JsonConfigurationProvider)).TryGet("AppSettings:LocalHost", out string url);
+
                     webBuilder
                     .UseConfiguration(config)
                     .UseKestrel()
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseIISIntegration()
-                    .UseStartup<Startup>();
-                    //.UseUrls("http://localhost:5000");
+                    .UseStartup<Startup>()
+                    .UseUrls(url);
                 });
     }
 }

@@ -3,9 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{4FB5E51B-6309-4417-9BA2-0D61C96C9C94}") = "RedBrain.Authentication", "src\RedBrain.Authentication.csproj", "{4CFC834D-F8FB-44FA-96C5-4AF0F76BD6CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedBrain.Authentication", "src\RedBrain.Authentication.csproj", "{4CFC834D-F8FB-44FA-96C5-4AF0F76BD6CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedBrain.Authentication.Tests", "tests\RedBrain.Authentication.Tests.csproj", "{0386F051-264C-49F5-909E-804499FB03C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedBrain.Authentication.Tests", "tests\RedBrain.Authentication.Tests.csproj", "{0386F051-264C-49F5-909E-804499FB03C4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BA2FEDA7-907D-4B0B-A2E9-7CCA6E11AA21}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

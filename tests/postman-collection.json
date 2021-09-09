@@ -11,7 +11,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f04aa139-8101-4aae-beab-14e4fb19ddea",
 						"exec": [
 							"pm.test(\"Status code should be 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -33,7 +32,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "3b705aea-c71e-4529-8963-4345cf4164c2",
 						"exec": [
 							"pm.environment.set(\"redbrain-random-user\", \"usr\" + Math.floor(Math.random() * 99999));"
 						],
@@ -67,12 +65,11 @@
 			"response": []
 		},
 		{
-			"name": "authenticate",
+			"name": "authenticate by uid & pwd",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "88a201fe-3844-4da9-a9e0-87968be733e8",
 						"exec": [
 							"pm.test(\"Status code should be 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -142,12 +139,89 @@
 			"response": []
 		},
 		{
+			"name": "authenticate token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code should be 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var redbrainUser = pm.variables.get(\"redbrain-user\");\r",
+							"var responseJson = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"id should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"id\", pm.variables.get(\"redbrain-user-id\"));\r",
+							"});\r",
+							"pm.test(\"username should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"username\", redbrainUser.username);\r",
+							"});\r",
+							"pm.test(\"firstName should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"firstName\", redbrainUser.firstName);\r",
+							"});\r",
+							"pm.test(\"lastName should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"lastName\", redbrainUser.lastName);\r",
+							"});\r",
+							"pm.test(\"email should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"email\", redbrainUser.email);\r",
+							"});\r",
+							"pm.test(\"mobile should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"mobile\", redbrainUser.mobile);\r",
+							"});\r",
+							"pm.test(\"tenant should match\", function () {\r",
+							"    pm.expect(responseJson).to.have.property(\"tenant\", redbrainUser.tenant);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{redbrain-access-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{redbrain-host}}/users/authenticate",
+					"host": [
+						"{{redbrain-host}}"
+					],
+					"path": [
+						"users",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "get user",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "ffc95fb4-8e56-4cc8-8fcd-a3a45f0847cd",
 						"exec": [
 							"pm.test(\"Status code should be 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -226,7 +300,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d4e6b035-2a51-4b2c-993d-ba17438a3253",
 						"exec": [
 							"pm.test(\"Status code should be 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -277,7 +350,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "be2ca4f1-75a5-405f-9e65-794dd0341db7",
 						"exec": [
 							"pm.test(\"Status code should be 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -356,7 +428,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "4d5ec3c6-20ac-4ed0-a5b0-c37facfd8856",
 						"exec": [
 							"pm.test(\"Status code should be 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -409,7 +480,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "34572b1e-e601-4d91-9652-6c2155112331",
 						"exec": [
 							"pm.test(\"Status code should be 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -454,7 +524,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "1fb06c41-5646-4ca2-98e8-9bd8518c7a96",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -464,13 +533,11 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "cf556767-c2b4-4482-b1cb-da1cb66c0ea3",
 				"type": "text/javascript",
 				"exec": [
 					""
 				]
 			}
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
