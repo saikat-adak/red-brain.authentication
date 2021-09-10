@@ -60,6 +60,31 @@ Body:
     }
 
 
+## Validate a token
+To validate a token run the following command:
+
+**Request**
+
+    curl --location --request GET 'http://localhost:5000/users/authenticate' \
+    --header 'Authorization: Bearer xxxx.xxxxx.xxxxx' \
+    --data-raw ''
+
+**Response**
+
+Status: 200 OK  
+Body:
+
+    {
+        "id": 19,
+        "username": "saikat.adak",
+        "firstName": "Saikat",
+        "lastName": "Adak",
+        "email": "saikat@xyz.com",
+        "mobile": "9999998888",
+        "tenant": "my-first-app"
+    }
+
+
 ## Make an authenticated request to retrieve all the users
 To make an authenticated request using the JWT token from the previous step, run this command:
 

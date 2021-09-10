@@ -21,9 +21,15 @@ namespace RedBrain.Authentication.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
+        #region Private fields
+
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
+
+        #endregion
+
+        #region ctors
 
         public UsersController(
             IUserService userService,
@@ -33,6 +39,29 @@ namespace RedBrain.Authentication.Controllers
             _userService = userService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
+        }
+
+        #endregion
+
+        #region Public methods
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] RegisterModel model)
+        {
+            // map model to entity
+            User user = _mapper.Map<User>(model);
+
+            try
+            {
+                _userService.Create(user, model.Password);
+                return Ok(); //TODO: convert it to 201
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [AllowAnonymous]
@@ -74,23 +103,17 @@ namespace RedBrain.Authentication.Controllers
             });
         }
 
-        [AllowAnonymous]
-        [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterModel model)
+        [HttpGet("authenticate")]
+        public IActionResult ValidateToken()
         {
-            // map model to entity
-            User user = _mapper.Map<User>(model);
+            // TODO: log that a token with user id x validated
+            User user = GetLoggedInUser();
 
-            try
-            {
-                _userService.Create(user, model.Password);
-                return Ok(); //TODO: convert it to 201
-            }
-            catch (AppException ex)
-            {
-                // return error message if there was an exception
-                return BadRequest(new { message = ex.Message });
-            }
+            if (user == null)
+                return BadRequest(new { message = "No user found in the database" });
+
+            var userModel = _mapper.Map<UserModel>(user);
+            return Ok(userModel);
         }
 
         [HttpGet]
@@ -144,6 +167,10 @@ namespace RedBrain.Authentication.Controllers
             return Ok();
         }
 
+        #endregion
+
+        #region Helper methods
+
         private User GetLoggedInUser()
         {
             int userId = int.Parse(this.User.Identities.FirstOrDefault().Name);
@@ -154,5 +181,8 @@ namespace RedBrain.Authentication.Controllers
         {
             return _userService.GetById(id).Tenant == GetLoggedInUser().Tenant;
         }
+
+        #endregion
+
     }
 }
