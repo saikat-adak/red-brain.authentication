@@ -63,7 +63,7 @@ namespace RedBrain.Authentication
                     {
                         IUserService userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
                         int userId = int.Parse(context.Principal.Identity.Name);
-                        Entities.User user = userService.GetById(userId);
+                        var user = userService.GetById(userId);
                         if (user == null)
                         {
                             // return unauthorized if user no longer exists

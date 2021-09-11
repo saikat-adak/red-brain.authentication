@@ -19,5 +19,6 @@ namespace RedBrain.Authentication.Helpers
         }
 
         public DbSet<User> Users { get; set; }
+        //public DbSet<Session> Sessions { get; set; } //TODO: add sessions table and keep the token for future use
     }
 }

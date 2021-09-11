@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "register",
+			"name": "register a new user",
 			"event": [
 				{
 					"listen": "test",
@@ -52,13 +52,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{redbrain-host}}/users/register",
+					"raw": "{{redbrain-host}}/v1/users",
 					"host": [
 						"{{redbrain-host}}"
 					],
 					"path": [
-						"users",
-						"register"
+						"v1",
+						"users"
 					]
 				}
 			},
@@ -126,13 +126,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{redbrain-host}}/users/authenticate",
+					"raw": "{{redbrain-host}}/v1/sessions",
 					"host": [
 						"{{redbrain-host}}"
 					],
 					"path": [
-						"users",
-						"authenticate"
+						"v1",
+						"sessions"
 					]
 				}
 			},
@@ -204,13 +204,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{redbrain-host}}/users/authenticate",
+					"raw": "{{redbrain-host}}/v1/sessions",
 					"host": [
 						"{{redbrain-host}}"
 					],
 					"path": [
-						"users",
-						"authenticate"
+						"v1",
+						"sessions"
 					]
 				}
 			},
@@ -282,11 +282,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{redbrain-host}}/users/{{redbrain-user-id}}",
+					"raw": "{{redbrain-host}}/v1/users/{{redbrain-user-id}}",
 					"host": [
 						"{{redbrain-host}}"
 					],
 					"path": [
+						"v1",
 						"users",
 						"{{redbrain-user-id}}"
 					]
@@ -332,11 +333,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{redbrain-host}}/users/{{redbrain-user-id}}",
+					"raw": "{{redbrain-host}}/v1/users/{{redbrain-user-id}}",
 					"host": [
 						"{{redbrain-host}}"
 					],
 					"path": [
+						"v1",
 						"users",
 						"{{redbrain-user-id}}"
 					]
@@ -410,11 +412,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{redbrain-host}}/users/{{redbrain-user-id}}",
+					"raw": "{{redbrain-host}}/v1/users/{{redbrain-user-id}}",
 					"host": [
 						"{{redbrain-host}}"
 					],
 					"path": [
+						"v1",
 						"users",
 						"{{redbrain-user-id}}"
 					]
@@ -463,11 +466,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{redbrain-host}}/users",
+					"raw": "{{redbrain-host}}/v1/users",
 					"host": [
 						"{{redbrain-host}}"
 					],
 					"path": [
+						"v1",
 						"users"
 					]
 				}

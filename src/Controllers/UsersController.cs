@@ -18,7 +18,7 @@ namespace RedBrain.Authentication.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("v1/[controller]")]
     public class UsersController : ControllerBase
     {
         #region Private fields
@@ -46,7 +46,7 @@ namespace RedBrain.Authentication.Controllers
         #region Public methods
 
         [AllowAnonymous]
-        [HttpPost("register")]
+        [HttpPost]
         public IActionResult Register([FromBody] RegisterModel model)
         {
             // map model to entity
@@ -62,58 +62,6 @@ namespace RedBrain.Authentication.Controllers
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.Message });
             }
-        }
-
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] AuthenticateModel model)
-        {
-            User user = _userService.Authenticate(model.Username, model.Password, model.Tenant);
-
-            if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
-
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Issuer = "http://localhost:5000",
-                Audience = "http://localhost:5000",
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor); //TODO: why token signature is not valid
-            string tokenString = tokenHandler.WriteToken(token);
-
-            return Ok(new AuthenticationResultModel
-            {
-                Id = user.Id,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Mobile = user.Mobile,
-                Tenant = user.Tenant,
-                TokenType = "Bearer",
-                Token = tokenString
-            });
-        }
-
-        [HttpGet("authenticate")]
-        public IActionResult ValidateToken()
-        {
-            // TODO: log that a token with user id x validated
-            User user = GetLoggedInUser();
-
-            if (user == null)
-                return BadRequest(new { message = "No user found in the database" });
-
-            var userModel = _mapper.Map<UserModel>(user);
-            return Ok(userModel);
         }
 
         [HttpGet]
