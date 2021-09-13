@@ -8,7 +8,6 @@ using RedBrain.Authentication.Helpers;
 using RedBrain.Authentication.Models.Users;
 using RedBrain.Authentication.Services;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
