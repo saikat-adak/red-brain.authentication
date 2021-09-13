@@ -9,12 +9,12 @@ namespace RedBrain.Authentication.Tests
     [TestClass]
     public class UsersControllerTests : BaseTest
     {
-        readonly UsersController _controller;
-        readonly int _testRunId;
+        readonly UsersController _usersController;
+        protected readonly int _testRunId;
         
         public UsersControllerTests()
         {
-            _controller = new UsersController(UserService, Mapper, AppSettings);
+            _usersController = new UsersController(UserService, Mapper, AppSettings);
             _testRunId = new Random().Next();
         }
 
@@ -25,7 +25,7 @@ namespace RedBrain.Authentication.Tests
             var model = GetRegisterModel(_testRunId);
 
             //act
-            var result = _controller.Register(model);
+            var result = _usersController.Register(model);
             var okResult = result as OkResult;
 
             //assert
@@ -33,41 +33,9 @@ namespace RedBrain.Authentication.Tests
             Assert.AreEqual(200, okResult.StatusCode);
         }
 
-        [TestMethod]
-        public void UserLoginTest()
-        {
-            UserRegistrationTest();
-            var registerModel = GetRegisterModel(_testRunId);
-            var response = _controller.Authenticate(new AuthenticateModel
-            {
-                Password = registerModel.Password,
-                Username = registerModel.Username,
-                Tenant = registerModel.Tenant
-            });
-            var okObjectResult = (response as OkObjectResult);
-
-            //assert
-            Assert.IsNotNull(okObjectResult);
-            Assert.AreEqual(200, okObjectResult.StatusCode);
-            Assert.IsNotNull(okObjectResult.Value);
-
-            var authResult = okObjectResult.Value as AuthenticationResultModel;
-            Assert.IsNotNull(authResult);
-
-            Assert.IsNotNull(authResult.Id);
-            Assert.AreEqual(registerModel.Username, authResult.Username);
-            Assert.IsNotNull(authResult.Token);
-            Assert.AreEqual("Bearer", authResult.TokenType);
-            Assert.AreEqual(registerModel.Tenant, authResult.Tenant);
-            Assert.AreEqual(registerModel.FirstName, authResult.FirstName);
-            Assert.AreEqual(registerModel.LastName, authResult.LastName);
-            Assert.AreEqual(registerModel.Mobile, authResult.Mobile);
-            Assert.AreEqual(registerModel.Email, authResult.Email);
-        }
-
         #region Helper methods
 
-        private RegisterModel GetRegisterModel(int testRunId)
+        protected RegisterModel GetRegisterModel(int testRunId)
         {
             return new RegisterModel
             {
