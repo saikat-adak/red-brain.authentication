@@ -1,10 +1,11 @@
 {
-    "profiles": {
-        "Development": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            }
-        }
+  "profiles": {
+    "Development": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:5000/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
+  }
 }
